@@ -48,7 +48,7 @@ def create_product():
     next_id = last_id + 1
 
     if data is None:
-        abort(401)
+        abort(400)
     name = data.get('name')
     if name is None:
         abort(400)
@@ -57,3 +57,29 @@ def create_product():
     PRODUCTS[next_id] = {'id' : next_id , 'name' : name }
 
     return jsonify(PRODUCTS[next_id]), 201
+
+@app.route('/api/v1/produit/<int:product_id>', methods=['PATCH'])
+def update_product(product_id):
+    data = request.get_json()
+    produit = {}
+    cle = 0
+    for key, product in PRODUCTS.items():
+        if product['id'] == product_id:
+            produit = product
+            cle = key
+
+    if not produit:
+        abort(404)
+
+    if data is None:
+        abort(400)
+
+    name = data.get('name')
+    if name is None:
+        abort(400)
+
+    if name == '' or not isinstance(name, str):
+        abort(422)
+
+    PRODUCTS[cle] = {'id' : product_id, 'name': name}
+    return '', 204
