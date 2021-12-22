@@ -6,26 +6,34 @@ from flask import abort
 
 app = Flask(__name__)
 
+PRODUCTS = {
+    1: { 'id': 1, 'name': 'Skello' },
+    2: { 'id': 2, 'name': 'Socialive.tv' },
+    3: { 'id': 3, 'name': 'Learn'},
+}
+
 @app.route('/')
 def hello():
     return "Hello World!"
 
-@app.route('/api/v1/produits')
+@app.route('/api/v1/produits', methods=['GET'])
 def read_many_products():
-    products = [{ 'id': 1, 'name': 'Skello' },
-    { 'id': 2, 'name': 'Socialive.tv' },
-    {'id': 3, 'name': 'Learn'}]
-    return jsonify(products)
+    return jsonify(list(PRODUCTS.values()))
 
-@app.route('/api/v1/produit/<int:product_id>')
+@app.route('/api/v1/produit/<int:product_id>', methods=['GET'])
 def read_product(product_id):
-    products = [{ 'id': 1, 'name': 'Skello' },
-    { 'id': 2, 'name': 'Socialive.tv' },
-    {'id': 3, 'name': 'Learn'}]
     produit = {}
-    for product in products:
+    for product in PRODUCTS.values():
         if product['id'] == product_id:
             produit = product
     if not produit:
         abort(404)
     return produit
+
+@app.route('/api/v1/produit/<int:product_id>', methods=['DELETE'])
+def delete_product(product_id):
+    produit = PRODUCTS.pop(product_id, None)
+    if produit is None:
+        abort(404)
+    return '', 204
+
