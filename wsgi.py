@@ -36,4 +36,3 @@ def delete_product(product_id):
     if produit is None:
         abort(404)
     return '', 204
-
