@@ -17,7 +17,7 @@ jobs:
       - name: run pylint
         run: |
           pipenv install pylint
-          pipenv run pylint app
+          pipenv run pylint wsgi.py
       - name: run nosetests
         run: |
           pipenv install nose
