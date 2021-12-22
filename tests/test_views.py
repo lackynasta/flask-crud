@@ -32,9 +32,14 @@ class TestViews(TestCase):
         self.assertIsNone(read_one_product)
 
     def test_delete_not_found_product(self):
-        response = self.client.delete("/api/v1/products/20")
+        response = self.client.delete("/api/v1/produit/20")
         product = response.json
         self.assertEqual(response.status_code, 404)
         self.assertIsNone(product)
 
-
+    def test_create_product(self):
+        response = self.client.post("/api/v1/produit", json={'name': 'Youtube'})
+        product = response.json
+        self.assertEqual(response.status_code, 201)
+        self.assertIsInstance(product, dict)
+        self.assertEqual(product['name'], 'Youtube')
