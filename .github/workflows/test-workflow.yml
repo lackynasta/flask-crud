@@ -15,9 +15,13 @@ jobs:
           pip install pipenv
           pipenv install --dev
       - name: run pylint
-        run: pipenv run pylint app
+        run: |
+          pipenv install pylint
+          pipenv run pylint app
       - name: run nosetests
-        run: pipenv run nosetests
+        run: |
+          pipenv install nose
+          pipenv run nosetests
 
   review:
     runs-on: ubuntu-latest
